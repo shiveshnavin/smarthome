@@ -26,6 +26,11 @@ GPIO.set_mode(orange, GPIO.MODE_OUTPUT);
 GPIO.set_mode(blue, GPIO.MODE_OUTPUT);
 GPIO.set_mode(yellow, GPIO.MODE_OUTPUT);
 
+GPIO.write(purple,1);
+GPIO.write(orange,1);
+GPIO.write(blue,1);
+GPIO.write(yellow,1); 
+
 let setPin = function(on,level) { 
   GPIO.write(led, level);
   print('LED on ->', on);
@@ -54,6 +59,10 @@ RPC.addHandler('read_adc', function(args) {
     ADC.enable(args.pin);
   }
   return ADC.read(args.pin);
+});
+
+RPC.addHandler('read_pin', function(args) {
+  return GPIO.read(args.pin);
 });
 
 RPC.addHandler('write_pin', function(args) {
