@@ -12,7 +12,7 @@ config_schema:
   - ["smarthome.automode", "b", true, {title: "Enable auto mode"}]
   - ["smarthome.autostarthour", "i", 15, {title: "24 hr time of auto start"}]
   - ["smarthome.autoendhour", "i", 16, {title: "24 hr time of auto stop"}]
-  - ["smarthome.hearbeat", "i", 20000, {title: "Stop the pin delay"}]
+  - ["smarthome.hearbeat", "i", 20000, {title: "timer hearbeat duration"}]
   - ["smarthome.lastautotry", "d", 0.0, {title: "last time auto exec datetime"}]
   - ["smarthome.minautoretry", "i", 72000, {title: "min seconds bw auto tries"}]
   - ["smarthome.runautofor", "i", 3600, {title: "seconds to run auto for"}]
