@@ -1,13 +1,19 @@
-author: mongoose-os
-description: A JS-enabled demo Mongoose OS firmware
-# arch: PLATFORM
+author: Shivesh Navin
+description: Firmware for smarthome device
 version: 1.0
-manifest_version: 2017-05-18
+manifest_version: 2020-08-02
 libs_version: ${mos.version}
 modules_version: ${mos.version}
 mongoose_os_version: ${mos.version}
 
 config_schema:
+  - ["smarthome", "o", {title: "smarthome settings"}]
+  - ["smarthome.stoptimeout", "i", 1000, {title: "Stop the pin delay"}]
+  - ["smarthome.automode", "b", true, {title: "Enable auto mode"}]
+  - ["smarthome.var0", "s", "", {title: "Extra value 0"}]
+  - ["smarthome.var1", "s", "", {title: "Extra value 1"}]
+  - ["smarthome.var2", "i", 0, {title: "Extra value 2"}]
+  - ["smarthome.var3", "i", 0, {title: "Extra value 3"}]
   - ["mqtt.server", "iot.eclipse.org:1883"]
   - ["i2c.enable", true]
 
@@ -18,7 +24,6 @@ filesystem:
   - fs
 
 libs: 
-  - origin: https://github.com/mongoose-os-libs/aws
   - origin: https://github.com/mongoose-os-libs/core
   - origin: https://github.com/mongoose-os-libs/dash
   - origin: https://github.com/mongoose-os-libs/fstab
@@ -28,19 +33,15 @@ libs:
   - origin: https://github.com/mongoose-os-libs/rpc-service-gpio
   - origin: https://github.com/mongoose-os-libs/rpc-uart
   - origin: https://github.com/mongoose-os-libs/rpc-ws
-  - origin: https://github.com/mongoose-os-libs/shadow
   - origin: https://github.com/mongoose-os-libs/sntp
   - origin: https://github.com/mongoose-os-libs/adc
-  - origin: https://github.com/mongoose-os-libs/i2c
-  - origin: https://github.com/mongoose-os-libs/ota-shadow
-  - origin: https://github.com/mongoose-os-libs/ota-http-client
-  - origin: https://github.com/mongoose-os-libs/ota-http-server
   - origin: https://github.com/mongoose-os-libs/rpc-loopback
-  - origin: https://github.com/mongoose-os-libs/rpc-mqtt
   - origin: https://github.com/mongoose-os-libs/rpc-service-ota
   - origin: https://github.com/mongoose-os-libs/rpc-service-wifi
+  - origin: https://github.com/mongoose-os-libs/rpc-mqtt
   - origin: https://github.com/mongoose-os-libs/spi
   - origin: https://github.com/mongoose-os-libs/vfs-dev-spi-flash
   - origin: https://github.com/mongoose-os-libs/wifi
   - origin: https://github.com/mongoose-os-libs/mjs
   - origin: https://github.com/mongoose-os-libs/esp32-touchpad
+  - origin: https://github.com/mongoose-os-libs/crontab
