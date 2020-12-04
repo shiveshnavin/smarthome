@@ -10,12 +10,20 @@ config_schema:
   - ["smarthome", "o", {title: "smarthome settings"}]
   - ["smarthome.stoptimeout", "i", 1000, {title: "Stop the pin delay"}]
   - ["smarthome.automode", "b", true, {title: "Enable auto mode"}]
+  - ["smarthome.autostarthour", "i", 15, {title: "24 hr time of auto start"}]
+  - ["smarthome.autoendhour", "i", 16, {title: "24 hr time of auto stop"}]
+  - ["smarthome.hearbeat", "i", 20000, {title: "Stop the pin delay"}]
+  - ["smarthome.lastautotry", "d", 0.0, {title: "last time auto exec datetime"}]
+  - ["smarthome.minautoretry", "i", 72000, {title: "min seconds bw auto tries"}]
+  - ["smarthome.runautofor", "i", 3600, {title: "seconds to run auto for"}]
   - ["smarthome.var0", "s", "", {title: "Extra value 0"}]
   - ["smarthome.var1", "s", "", {title: "Extra value 1"}]
   - ["smarthome.var2", "i", 0, {title: "Extra value 2"}]
   - ["smarthome.var3", "i", 0, {title: "Extra value 3"}]
+  - ["smarthome.var4", "i", 0, {title: "Extra value 4"}]
   - ["mqtt.server", "iot.eclipse.org:1883"]
   - ["i2c.enable", true]
+  - ["sys.tz_spec", "IST-5:30"]
 
 tags:
   - js
