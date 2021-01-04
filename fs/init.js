@@ -19,15 +19,19 @@ let yellow = 21;
 
 let motor = 19;
 let gate = 21;
+let waterOverflow = 14;
 
 ADC.enable(sensor);
 // GPIO.set_mode(sensor, GPIO.MODE_INPUT);
+let overflowTick = 0;
 
 GPIO.set_mode(led, GPIO.MODE_OUTPUT);
 GPIO.set_mode(purple, GPIO.MODE_OUTPUT);
 GPIO.set_mode(orange, GPIO.MODE_OUTPUT);
 GPIO.set_mode(blue, GPIO.MODE_OUTPUT);
-GPIO.set_mode(yellow, GPIO.MODE_OUTPUT);
+GPIO.set_mode(yellow, GPIO.MODE_OUTPUT );
+GPIO.set_mode(waterOverflow, GPIO.MODE_INPUT );
+GPIO.set_pull(waterOverflow, GPIO.PULL_DOWN ) ;
 
 
 GPIO.write(purple, 1);
@@ -35,9 +39,16 @@ GPIO.write(orange, 1);
 GPIO.write(blue, 1);
 GPIO.write(yellow, 1);
 
+let motorStatusValue = 1;
 let setPin = function (pin, level) {
   GPIO.write(pin, level);
   print('Set pin = ', pin, ' to ', level);
+  if(pin === motor)
+  {
+    motorStatusValue = level;
+    if(level == 0)
+     overflowTick = 0;
+  }
   return true;
 };
 
@@ -82,7 +93,23 @@ if (lastTryTime < 1607099824) {
 
 }
 
+let checkWaterOverflowAndStop = function(){
+
+  let isOverflow = GPIO.read(waterOverflow);
+  if(isOverflow){
+    overflowTick = overflowTick + 1;
+    if(overflowTick >= 2){
+      overflowTick = 0;
+      setPin(autoPin, 1);
+    }
+  }
+};
+
 Timer.set(keepAliveTick, Timer.REPEAT, function () {
+
+  if(motorStatusValue === 0){
+    checkWaterOverflowAndStop();
+  }
 
   if (isAutoMode) {
     let now = Timer.now();
