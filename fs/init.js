@@ -98,7 +98,7 @@ let checkWaterOverflowAndStop = function(){
   let isOverflow = GPIO.read(waterOverflow);
   if(isOverflow){
     overflowTick = overflowTick + 1;
-    if(overflowTick >= 2){
+    if(overflowTick >= 1){
       overflowTick = 0;
       setPin(autoPin, 1);
     }
