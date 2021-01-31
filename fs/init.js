@@ -8,6 +8,8 @@ load('api_rpc.js');
 // load('api_esp32_touchpad.js');
 load('api_adc.js'); 
 load('api_dash.js');
+load('api_shadow.js');
+
 
 
 let sensor = 34;
@@ -18,7 +20,8 @@ let blue = 19;
 let yellow = 21;
 
 let motor = 19;
-let gate = 21;
+let GATE_OPEN = 18;
+let GATE_CLOSE = 21;
 let waterOverflow = 14;
 
 ADC.enable(sensor);
@@ -46,7 +49,7 @@ let setPin = function (pin, level) {
   if(pin === motor)
   {
     motorStatusValue = level;
-    if(level == 0)
+    if(level === 0)
      overflowTick = 0;
   }
   return true;
@@ -145,10 +148,10 @@ Timer.set(keepAliveTick, Timer.REPEAT, function () {
 
 let lastPin = 0;
 let lastValue = 0;
+let delay = Cfg.get('smarthome.stoptimeout');
 let stopMotorByPullingUpPin = function (pin, value, timeOut) {
   lastPin = pin;
   lastValue = value;
-  let delay = Cfg.get('smarthome.stoptimeout');
   if (timeOut !== undefined) {
     delay = timeOut;
   }
@@ -156,6 +159,43 @@ let stopMotorByPullingUpPin = function (pin, value, timeOut) {
     setPin(lastPin, lastValue);
   }, null);
 };
+
+let openGate = function(){
+
+  setPin(GATE_OPEN,0);
+  Sys.usleep(500000);
+  setPin(GATE_CLOSE,1);
+  Sys.usleep(delay * 1500);
+  setPin(GATE_OPEN,1);
+
+};
+let closeGate = function(){
+
+  setPin(GATE_CLOSE,0);
+  Sys.usleep(500000);
+  setPin(GATE_OPEN,1);
+  Sys.usleep(delay * 1000);
+  setPin(GATE_CLOSE,1);
+
+};
+
+RPC.addHandler('gate_control', function (args) {
+ 
+  if(args.open === 1){
+    openGate();
+  }
+  else if(args.open === -1)
+  {
+    closeGate();
+  }
+  else{
+    setPin(GATE_OPEN,1);
+    setPin(GATE_CLOSE,1);
+  }
+  
+  return true;
+
+});
 
 RPC.addHandler('read_pin', function (args) {
   return GPIO.read(args.pin);
