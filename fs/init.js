@@ -20,8 +20,8 @@ let blue = 19;
 let yellow = 21;
 
 let motor = 19;
-let GATE_OPEN = 18;
-let GATE_CLOSE = 21;
+let GATE_OPEN = orange;
+let GATE_CLOSE = yellow;
 let waterOverflow = 14;
 
 ADC.enable(sensor);
@@ -163,19 +163,21 @@ let stopMotorByPullingUpPin = function (pin, value, timeOut) {
 let openGate = function(){
 
   setPin(GATE_OPEN,0);
-  Sys.usleep(500000);
   setPin(GATE_CLOSE,1);
-  Sys.usleep(delay * 1500);
-  setPin(GATE_OPEN,1);
+  Timer.set(delay, 0, function () {
+    setPin(GATE_OPEN,1);
+    setPin(GATE_CLOSE,1);
+  }, null); 
 
 };
 let closeGate = function(){
 
-  setPin(GATE_CLOSE,0);
-  Sys.usleep(500000);
   setPin(GATE_OPEN,1);
-  Sys.usleep(delay * 1000);
-  setPin(GATE_CLOSE,1);
+  setPin(GATE_CLOSE,0);
+  Timer.set(delay, 0, function () {
+    setPin(GATE_OPEN,1);
+    setPin(GATE_CLOSE,1);
+  }, null); 
 
 };
 
