@@ -38,9 +38,9 @@ GPIO.set_pull(waterOverflow, GPIO.PULL_DOWN ) ;
 
 
 GPIO.write(purple, 1);
-GPIO.write(orange, 1);
+GPIO.write(orange, 0);
 GPIO.write(blue, 1);
-GPIO.write(yellow, 1);
+GPIO.write(yellow, 0);
 
 let motorStatusValue = 1;
 let setPin = function (pin, level) {
@@ -160,26 +160,38 @@ let stopMotorByPullingUpPin = function (pin, value, timeOut) {
   }, null);
 };
 
+
+
+let elapsedopenGate = 0;
+let timeridopenGate = 0;
+
 let openGate = function(){
-
-  setPin(GATE_OPEN,0);
-  setPin(GATE_CLOSE,1);
-  Timer.set(delay, 0, function () {
-    setPin(GATE_OPEN,1);
-    setPin(GATE_CLOSE,1);
-  }, null); 
-
-};
-let closeGate = function(){
-
   setPin(GATE_OPEN,1);
   setPin(GATE_CLOSE,0);
-  Timer.set(delay, 0, function () {
-    setPin(GATE_OPEN,1);
-    setPin(GATE_CLOSE,1);
+  Timer.set(delay, 0 , function () {
+      
+    setPin(GATE_OPEN,0);
+    setPin(GATE_CLOSE,0);
+      
   }, null); 
 
 };
+let elapsedcloseGate=0;
+let timeridcloseGate=0;
+let closeGate = function(){
+  setPin(GATE_OPEN,0);
+  setPin(GATE_CLOSE,1);
+  Timer.set(delay, 0 , function () {
+  
+      
+    setPin(GATE_OPEN,0);
+    setPin(GATE_CLOSE,0);
+   
+  }, null); 
+
+};
+
+
 
 RPC.addHandler('gate_control', function (args) {
  
@@ -191,8 +203,8 @@ RPC.addHandler('gate_control', function (args) {
     closeGate();
   }
   else{
-    setPin(GATE_OPEN,1);
-    setPin(GATE_CLOSE,1);
+    setPin(GATE_OPEN,0);
+    setPin(GATE_CLOSE,0);
   }
   
   return true;
